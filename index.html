@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+	  <meta charset="utf-8">
+
+	  <title>gun test</title>
+		
+	  <script src="https://rawgit.com/amark/gun/master/gun.js"></script>
+	</head>
+	
+	<body>
+
+	<script>
+/*
+fire my server thingie
+
+ssh stage.sl.pt
+cd Work/gon_test
+node run2.js
+
+https://github.com/amark/gun/wiki
+*/
+
+var log = function() { window.console.log.apply(window.console, arguments); };
+
+var log2 = function(txt) { return log(txt); };
+
+localStorage.clear();
+
+//var gun = window.Gun('http://stage.sl.pt:1337/');
+var gun = window.Gun();
+
+var k = gun
+	.set({
+		name:     'Khoshekh',
+		species:  'cat',
+		furColor: 'yellow'
+	})
+	.key('cat/k');
+
+var c = gun
+	.set({
+	    name:     'Cecil',
+		species:  'human',
+		location: 'LA'
+	})
+	.key('person/c');
+
+
+/*c
+	.path('cat')
+	.set(k);*/
+
+//setTimeout(function() {
+	gun
+		.load('cat/k')
+		.get(function(k) {
+			this
+				.load('person/c')
+				.set({cat:k});
+		})
+//}, 1000);
+
+
+//gun.load('cat/k').get(log);
+//gun.load('person/c').get(log);
+//gun.load('person/c').get(log).path('cat').get(log);
+	
+</script>
+</body>
+</html>
