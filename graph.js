@@ -27,6 +27,10 @@
 
 
 
+	var r30 = Math.PI/6;
+
+
+
 	/*jshint unused:false*/
 
 	window.graph = function(o) {
@@ -99,24 +103,26 @@
 			ctx.stroke();
 		};
 
+		var applyFont = function(v, l) {
+			ctx.font = [(v.fontStyle || l.fontStyle), ' ', (v.fontHeight || l.fontHeight), 'px ', (v.fontFamily || l.fontFamily)].join('');
+		};
+
 
 
 		// measure node boxes
-		ctx.font = ln.fontStyle + ' ' + ln.fontHeight + 'px ' + ln.fontFamily;
-
 		o.nodes.forEach(function(n) {
 			var o = clone(n); delete o.id; delete o.label;
+			applyFont(n, ln);
 			g.setNode(n.id, box(n.label, o, ln));
 		});
 
 
 
 		// measure edge boxes
-		ctx.font = le.fontStyle + ' ' + le.fontHeight + 'px ' + le.fontFamily;
-
 		o.edges.forEach(function(e) {
 			var o = clone(e); delete o.from; delete o.to; delete o.label;
 			if ('label' in e) {
+				applyFont(e, le);
 				g.setEdge(e.from, e.to, box(e.label, o, le));
 			}
 			else {
@@ -132,19 +138,15 @@
 		canvasEl.setAttribute('width',  Math.ceil(dims.width));
 		canvasEl.setAttribute('height', Math.ceil(dims.height));
 
-		ctx.textAlign = 'center';
+		ctx.textAlign    = 'center';
 		ctx.textBaseline = 'middle';
 
-		ctx.lineCap = 'round';
+		ctx.lineCap   = 'round';
 		ctx.lineJoint = 'round';
-
-		var r30 = Math.PI/6;
 
 
 
 		// draw edges
-		ctx.font = le.fontStyle + ' ' + le.fontHeight + 'px ' + le.fontFamily;
-
 		forKV(g._edgeLabels, function(k, v) {
 			//console.log(k, v);
 
@@ -170,6 +172,8 @@
 				}
 
 				ctx.fillStyle = v.labelColor || le.labelColor;
+
+				applyFont(v, le);
 				ctx.fillText(v.label, p.x, p.y);
 			}
 		});
@@ -177,14 +181,15 @@
 
 
 		// draw nodes
-		ctx.font = ln.fontStyle + ' ' + ln.fontHeight + 'px ' + ln.fontFamily;
-
 		forKV(g._nodes, function(k, v) {
 			//console.log(k, v);
+
 			ctx.fillStyle = v.backgroundColor || ln.backgroundColor;
 			ctx.fillRect(v.x-v.width/2, v.y-v.height/2, v.width, v.height);
 
 			ctx.fillStyle = v.labelColor || ln.labelColor;
+
+			applyFont(v, ln);
 			ctx.fillText(v.label, v.x, v.y);
 		});
 
