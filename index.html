@@ -2,22 +2,32 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	  <meta charset="utf-8">
+		<meta charset="utf-8">
 
-	  <title>gun test</title>
-		
-	  <script src="https://rawgit.com/amark/gun/master/gun.js"></script>
+		<title>gun test</title>
+
+		<script src="https://rawgit.com/amark/gun/master/gun.js"></script>
+		<script src="bower_components/sigma.js/sigma.min.js"></script>
+		<script src="bower_components/sigma.js/plugins/sigma.layout.forceAtlas2.min.js"></script>
+
+		<style type="text/css">
+			#graph {
+				width:  600px;
+				height: 400px;
+			}
+		</style>
 	</head>
 	
 	<body>
+		<div id="graph"></div>
 
 	<script>
 /*
 fire my server thingie
 
 ssh stage.sl.pt
-cd Work/gon_test
-node run2.js
+cd Work/gun_test
+node run.js
 
 https://github.com/amark/gun/wiki
 */
@@ -26,47 +36,95 @@ var log = function() { window.console.log.apply(window.console, arguments); };
 
 var log2 = function(txt) { return log(txt); };
 
-localStorage.clear();
+//localStorage.clear();
 
 //var gun = window.Gun('http://stage.sl.pt:1337/');
 var gun = window.Gun();
 
-var k = gun
+/*gun
 	.set({
-		name:     'Khoshekh',
-		species:  'cat',
-		furColor: 'yellow'
+		name:     'Helen',
+		species:  'human'
 	})
-	.key('cat/k');
+	.key('person/h')
 
-var c = gun
-	.set({
-	    name:     'Cecil',
-		species:  'human',
-		location: 'LA'
-	})
-	.key('person/c');
-
-
-/*c
 	.path('cat')
-	.set(k);*/
 
-//setTimeout(function() {
-	gun
-		.load('cat/k')
-		.get(function(k) {
-			this
-				.load('person/c')
-				.set({cat:k});
-		})
-//}, 1000);
+	.set({
+		name:     'Cesar',
+		species:  'cat'
+	})
+	.key('cat/c');*/
+
+/*
+gun
+	.load('person/h')
+	.get(function(h) {
+		this
+			.load('cat/c')
+			.path('person')
+			.set(h);
+	})
+	.blank(log2('oops'));
+*/
+
+//gun.load('person/h').get(log).path('cat').get(log).path('person').get(log);
+
+// gun.__.keys
+// gun.__.graph
 
 
-//gun.load('cat/k').get(log);
-//gun.load('person/c').get(log);
-//gun.load('person/c').get(log).path('cat').get(log);
-	
+
+setTimeout(function() {
+
+	var g = {
+		nodes: [],
+		edges: []
+	};
+
+	g.nodes.push({
+		id:     'n1',
+		label:  'N1',
+		x:      Math.random(),
+		y:      Math.random(),
+		size:   40,
+		//color:  defaultNodeColor
+	});
+
+	g.nodes.push({
+		id:     'n2',
+		label:  'N2',
+		x:      Math.random(),
+		y:      Math.random(),
+		size:   40,
+		//color:  defaultNodeColor
+	});
+
+	g.edges.push({
+		id:     'e1',
+		label:  'E1',
+		source: 'n1',
+		target: 'n2',
+		//size:   10,
+		//color:  defaultEdgeColor
+	});
+
+	var s = new sigma({
+		graph:     g,
+		container: 'graph',
+		settings: {
+			/* minNodeSize:     2,
+			maxNodeSize:    20,
+			minEdgeSize:     0.1,
+			maxEdgeSize:    10,
+			labelThreshold:  6*/
+		}
+	});
+
+	s.startForceAtlas2();
+	setTimeout(function() { s.stopForceAtlas2(); }, 500);
+}, 1000);
+
 </script>
 </body>
 </html>

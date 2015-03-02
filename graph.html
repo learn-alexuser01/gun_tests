@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+
+		<script type='text/javascript' src='https://rawgit.com/cpettitt/dagre/master/dist/dagre.min.js'></script>
+		<script type='text/javascript' src='graph.js'></script>
+	</head>
+
+	<body>
+		<script type='text/javascript'>
+			graph({
+				nodes: [
+					{id:'kspacey',   label:'Kevin Spacey'},
+					{id:'swilliams', label:'Saul Williams'},
+					{id:'bpitt',     label:'Brad Pitt', labelColor:'red', backgroundColor:'#DFD'},
+					{id:'hford',     label:'Harrison Ford'},
+					{id:'lwilson',   label:'Luke Wilson'},
+					{id:'kbacon',    label:'Kevin Bacon'}
+				],
+				edges: [
+					{from:'kspacey',   to:'swilliams', label:'a'},
+					{from:'swilliams', to:'kbacon',    label:'b', lineColor:'orange', labelColor:'blue', lineWidth:5},
+					{from:'bpitt',     to:'kbacon',    label:'c'},
+					{from:'hford',     to:'lwilson',   label:'d'},
+					{from:'lwilson',   to:'kbacon',    label:'e'}
+				]
+			});
+		</script>
+	</body>
+</html>
