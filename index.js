@@ -1,6 +1,6 @@
-var log = function() { window.console.log.apply(window.console, arguments); };
+//var log = function() { window.console.log.apply(window.console, arguments); };
 
-var log2 = function(txt) { return log(txt); };
+//var log2 = function(txt) { return log(txt); };
 
 localStorage.clear();
 
@@ -32,12 +32,14 @@ var drawGraph = function() {
 
 	//gun.__.keys;
 
+	var nodeColor = '#CAA';
+	var indexColor = '#ACA';
+
 	forKV(gun.__.graph, function(id, n) {
-		nodes.push({ // NODE
-			id: id,
-			label: id.substring(0, 6),
-			//label: id,
-			backgroundColor: '#FCC'
+		nodes.push({         // NODE
+			id:              id,
+			label:           id.substring(0, 6), // was id
+			backgroundColor: nodeColor
 		});
 
 		forKV(n, function(k2, val) {
@@ -46,26 +48,26 @@ var drawGraph = function() {
 			if (typeof val === 'object') {
 				if (k2 === '_') { return; }
 
-				return edges.push({ // EDGE BETWEEN NODES
-					from: id,
-					to:   val['#'],
-					label: k2,
-					lineWidth: 2,
-					lineColor: '#F0F'
+				return edges.push({  // EDGE BETWEEN NODES
+					from:            id,
+					to:              val['#'],
+					label:           k2,
+					lineColor:       nodeColor,
+					labelColor:      nodeColor
 				});
 			}
 
-			nodes.push({ // SIMPLE PROPERTY (String|Number|Boolean)
-				id: id2,
-				label: '' + val,
-				backgroundColor: '#CCC'
+			nodes.push({         // SIMPLE PROPERTY (String|Number|Boolean)
+				id:              id2,
+				label:           '' + val,
+				backgroundColor: '#CCC',
+				fontFamily:      'monospace'
 			});
 
-			edges.push({ // EDGE BETWEEN NODE AND PROPERTY
-				from: id,
-				to:   id2,
-				label: k2,
-				lineWidth: 2,
+			edges.push({   // EDGE BETWEEN NODE AND PROPERTY
+				from:      id,
+				to:        id2,
+				label:     k2,
 				lineColor: '#000',
 				fontStyle: 'bold'
 			});
@@ -73,23 +75,25 @@ var drawGraph = function() {
 	});
 
 	forKV(gun.__.keys, function(index, o) {
-		nodes.push({ // INDEX NODE
-			id: index,
-			label: index,
-			backgroundColor: '#CFC'
+		nodes.push({         // INDEX NODE
+			id:              index,
+			label:           index,
+			labelColor:      '#FFF',
+			backgroundColor: indexColor
 		});
 
 		edges.push({ // EDGE BETWEEN INDEX NODE AND REGULAR NODE
-			from: index,
-			to:   o._['#']
+			from:      index,
+			to:        o._['#'],
+			lineColor: indexColor
 		});
 	});
 
-	c = graph({
+	c = window.graph({
 		nodes: nodes,
 		edges: edges,
 		layout: {
-			// rankdir: 'TB',
+			// rankdir: 'TB', // 'TB' | 'BT' | 'LR' | 'RL'
 			// nodesep: 50,
 			// edgesep: 10,
 			// ranksep: 50,
@@ -110,7 +114,7 @@ var drawGraph = function() {
 				fontHeight: 12,
 				fontStyle:  'bold', // '' | 'bold' | 'italic' | 'bold italic'
 				padding:    1,
-				lineWidth:  1,
+				lineWidth:  2,
 				lineColor:  '#777',
 				labelColor: '#000'
 			}

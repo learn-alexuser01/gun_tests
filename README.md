@@ -25,10 +25,10 @@ graph({
 	],
 
 	// ALL UNITS ARE IN PIXELS! FONT SIZES TOO
-	
+
 	layout: { // https://github.com/cpettitt/dagre/wiki#configuring-the-layout
 
-		rankdir: 'TB',
+		rankdir: 'TB', // 'TB' | 'BT' | 'LR' | 'RL'
 		nodesep: 50,
 		edgesep: 10,
 		ranksep: 50,
