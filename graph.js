@@ -24,7 +24,6 @@ function graph(o) {
 
 	// https://simon.html5.org/dump/html5-canvas-cheat-sheet.html
 	var canvasEl = document.createElement('canvas');
-	document.body.appendChild(canvasEl);
 
 	var ctx = canvasEl.getContext('2d');
 
@@ -134,4 +133,6 @@ function graph(o) {
 		ctx.fillStyle = v.labelColor || nodeLabelColor;
 		ctx.fillText(v.label, v.x, v.y);
 	});
+
+	return canvasEl;
 };

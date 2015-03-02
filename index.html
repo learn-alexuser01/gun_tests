@@ -7,20 +7,12 @@
 		<title>gun test</title>
 
 		<script src="https://rawgit.com/amark/gun/master/gun.js"></script>
-		<script src="bower_components/sigma.js/sigma.min.js"></script>
-		<script src="bower_components/sigma.js/plugins/sigma.layout.forceAtlas2.min.js"></script>
 
-		<style type="text/css">
-			#graph {
-				width:  600px;
-				height: 400px;
-			}
-		</style>
+		<script type="text/javascript" src="https://rawgit.com/cpettitt/dagre/master/dist/dagre.min.js"></script>
+		<script type="text/javascript" src="graph.js"></script>
 	</head>
 	
 	<body>
-		<div id="graph"></div>
-
 	<script>
 /*
 fire my server thingie
@@ -41,7 +33,7 @@ var log2 = function(txt) { return log(txt); };
 //var gun = window.Gun('http://stage.sl.pt:1337/');
 var gun = window.Gun();
 
-/*gun
+gun
 	.set({
 		name:     'Helen',
 		species:  'human'
@@ -54,7 +46,7 @@ var gun = window.Gun();
 		name:     'Cesar',
 		species:  'cat'
 	})
-	.key('cat/c');*/
+	.key('cat/c');
 
 /*
 gun
@@ -74,55 +66,73 @@ gun
 // gun.__.graph
 
 
+var forKV = function(o, cb) {
+	for (var k in o) {
+		if (!o.hasOwnProperty(k)) { continue; }
+		cb(k, o[k]);
+	}
+};
+
+var rndId = function() {
+	return 'rnd' + ~~( Math.random() * 1000000 );
+};
+
 
 setTimeout(function() {
+	var nodes = [];
+	var edges = [];
 
-	var g = {
-		nodes: [],
-		edges: []
-	};
+	//gun.__.keys;
 
-	g.nodes.push({
-		id:     'n1',
-		label:  'N1',
-		x:      Math.random(),
-		y:      Math.random(),
-		size:   40,
-		//color:  defaultNodeColor
+	forKV(gun.__.graph, function(id, n) {
+		nodes.push({
+			id: id,
+			label: 'N ' + id,
+			backgroundColor: '#FCC'
+		});
+
+		forKV(n, function(k2, val) {
+			var id2 = rndId();
+
+			if (typeof val === 'object') { return; }
+
+			nodes.push({
+				id: id2,
+				label: '' + val,
+				backgroundColor: '#CCC'
+			});
+
+			edges.push({
+				from: id,
+				to:   id2,
+				label: k2,
+				lineWidth: 2,
+				lineColor: '#000'
+			});
+		});
 	});
 
-	g.nodes.push({
-		id:     'n2',
-		label:  'N2',
-		x:      Math.random(),
-		y:      Math.random(),
-		size:   40,
-		//color:  defaultNodeColor
+	forKV(gun.__.keys, function(index, o) {
+		nodes.push({
+			id: index,
+			label: 'I ' + index,
+			backgroundColor: '#CFC'
+		});
+
+		edges.push({
+			from: index,
+			to:   o._['#']
+		});
+
+		console.log(index, o._['#']);
 	});
 
-	g.edges.push({
-		id:     'e1',
-		label:  'E1',
-		source: 'n1',
-		target: 'n2',
-		//size:   10,
-		//color:  defaultEdgeColor
+	var c = graph({
+		nodes: nodes,
+		edges: edges
 	});
 
-	var s = new sigma({
-		graph:     g,
-		container: 'graph',
-		settings: {
-			/* minNodeSize:     2,
-			maxNodeSize:    20,
-			minEdgeSize:     0.1,
-			maxEdgeSize:    10,
-			labelThreshold:  6*/
-		}
-	});
-
-	s.startForceAtlas2();
-	setTimeout(function() { s.stopForceAtlas2(); }, 500);
+	document.body.appendChild(c);
 }, 1000);
 
 </script>

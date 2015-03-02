@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset='utf-8'>
+		<meta charset="utf-8">
 
-		<script type='text/javascript' src='https://rawgit.com/cpettitt/dagre/master/dist/dagre.min.js'></script>
-		<script type='text/javascript' src='graph.js'></script>
+		<title>graph</title>
+
+		<script type="text/javascript" src="https://rawgit.com/cpettitt/dagre/master/dist/dagre.min.js"></script>
+		<script type="text/javascript" src="graph.js"></script>
 	</head>
 
 	<body>
-		<script type='text/javascript'>
-			graph({
+		<script type="text/javascript">
+			var c = graph({
 				nodes: [
 					{id:'kspacey',   label:'Kevin Spacey'},
 					{id:'swilliams', label:'Saul Williams'},
@@ -26,6 +28,7 @@
 					{from:'lwilson',   to:'kbacon',    label:'e'}
 				]
 			});
+			document.body.appendChild(c);
 		</script>
 	</body>
 </html>
