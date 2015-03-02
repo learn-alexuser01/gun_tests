@@ -1,162 +1,80 @@
-
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
 
-		<title>gun test</title>
+		<title>gun testing</title>
 
 		<script src="https://rawgit.com/amark/gun/master/gun.js"></script>
 
 		<script type="text/javascript" src="https://rawgit.com/cpettitt/dagre/master/dist/dagre.min.js"></script>
 		<script type="text/javascript" src="graph.js"></script>
+
+		<style type="text/css">
+			body {
+				margin: 0;
+				padding: 0;
+			}
+
+			code {
+				font-size: 10px;
+			}
+
+			pre {
+				margin: 2px;
+			}
+		</style>
 	</head>
 	
 	<body>
-	<script>
-/*
-fire my server thingie
+		<div id="pointers">
+			<pre><code>** API reference **
 
-ssh stage.sl.pt
-cd Work/gun_test
-node run.js
-
-https://github.com/amark/gun/wiki
-*/
-
-var log = function() { window.console.log.apply(window.console, arguments); };
-
-var log2 = function(txt) { return log(txt); };
-
-//localStorage.clear();
-
-//var gun = window.Gun('http://stage.sl.pt:1337/');
-var gun = window.Gun();
-
-/*gun
-	.set({ name:'Helen', species:'human' })
-	.key('person/h')
-
-	//.load('person/h')
-
-	.path('cat')
-
-	.set({ name:'Cesar', species:'cat' })
-	.key('cat/c');*/
-
-/*
 gun
-	.load('person/h')
-	.get(function(h) {
-		this
-			.load('cat/c')
-			.path('person')
-			.set(h);
-	})
-	.blank(log2('oops'));
-*/
+  .set( {Object} o , [{Function} cb] )
+  .load( {String} k )
+  .get( {Function} cb )
+  .key( {String} k )
+  .path( {String} p )
+  .on( {Function} cb )
+  .back
+  .map()
+  .blank()
+  .insert
 
-// gun.set({age:10}).set({gender:'m'}).key('a')
-// gun.set({age:10}).set({gender:'m'}).key('b')
-// gun.load('a').get(function(a) { gun.load('b').path('cena').set(a); }) // b - cena -> a
-// gun.load('b').get(function(b) { gun.load('a').path('cena2').set(b); }) // a - cena2 -> b
-// drawGraph()
+Open the console and do some gun ops. See the graph update accordingly...
 
+** Creation example **
 
-//gun.load('person/h').get(log).path('cat').get(log).path('person').get(log);
-
-// gun.__.keys
-// gun.__.graph
+gun.set({gender:'m', age:30, name:'alfred'}).key('user/alfred')
+gun.set({gender:'f', age:22, name:'beth'  }).key('user/beth'  )
+gun.load('user/alfred').get(function(a) { gun.load('user/beth'  ).path('friend_of').set(a); }) // b - friend_of -> a
+gun.load('user/beth'  ).get(function(b) { gun.load('user/alfred').path('friend_of').set(b); }) // a - friend_of -> b
 
 
-var forKV = function(o, cb) {
-	for (var k in o) {
-		if (!o.hasOwnProperty(k)) { continue; }
-		cb(k, o[k]);
-	}
-};
+** Query example **
 
-var rndId = function() {
-	return 'rnd' + ~~( Math.random() * 1000000 );
-};
+			<code></pre>
+		</div>
+		<script type="text/javascript" src="index.js"></script>
 
+		<script type="text/javascript">
+			if (1) {
+				gun.set({gender:'m', age:30, name:'alfred'}).key('user/alfred'); // 1
 
-var c;
+				setTimeout(function() {
+					gun.set({gender:'f', age:22, name:'beth'}).key('user/beth'); // 2
 
-var drawGraph = function() {
-	if (c) {
-		document.body.removeChild(c);
-	}
+					setTimeout(function() {
+						gun.load('user/alfred').get(function(a) { gun.load('user/beth').path('friend_of').set(a); }); // 3
 
-	var nodes = [];
-	var edges = [];
+						setTimeout(function() {
+							gun.load('user/beth').get(function(b) { gun.load('user/alfred').path('friend_of').set(b); }); // 4
 
-	//gun.__.keys;
-
-	forKV(gun.__.graph, function(id, n) {
-		nodes.push({
-			id: id,
-			label: id.substring(0, 6),
-			//label: id,
-			backgroundColor: '#FCC'
-		});
-
-		forKV(n, function(k2, val) {
-			var id2 = rndId();
-
-			if (typeof val === 'object') {
-				if (k2 === '_') { return; }
-
-				return edges.push({
-					from: id,
-					to:   val['#'],
-					label: k2,
-					lineWidth: 2,
-					lineColor: '#F0F'
-				});
+						}, 0);
+					}, 0);
+				}, 0);
 			}
-
-			nodes.push({
-				id: id2,
-				label: '' + val,
-				backgroundColor: '#CCC'
-			});
-
-			edges.push({
-				from: id,
-				to:   id2,
-				label: k2,
-				lineWidth: 2,
-				lineColor: '#000'
-			});
-		});
-	});
-
-	forKV(gun.__.keys, function(index, o) {
-		nodes.push({
-			id: index,
-			label: index,
-			backgroundColor: '#CFC'
-		});
-
-		edges.push({
-			from: index,
-			to:   o._['#']
-		});
-
-		//console.log(index, o._['#']);
-	});
-
-	c = graph({
-		nodes: nodes,
-		edges: edges
-	});
-
-	document.body.appendChild(c);
-}
-
-//setTimeout(drawGraph, 1000);
-
-</script>
-</body>
+		</script>
+	</body>
 </html>

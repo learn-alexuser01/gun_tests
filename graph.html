@@ -26,7 +26,15 @@
 					{from:'bpitt',     to:'kbacon',    label:'c'},
 					{from:'hford',     to:'lwilson',   label:'d'},
 					{from:'lwilson',   to:'kbacon',    label:'e'}
-				]
+				],
+				layout: { // https://github.com/cpettitt/dagre/wiki#configuring-the-layout
+					rankdir: 'TB',
+					nodesep: 50,
+					edgesep: 10,
+					ranksep: 50,
+					marginx: 10,
+					marginy: 10
+				}
 			});
 			document.body.appendChild(c);
 		</script>

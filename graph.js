@@ -3,7 +3,7 @@ function graph(o) {
 
 	var g = new dagre.graphlib.Graph();
 
-	g.setGraph({});
+	g.setGraph(o.layout || {});
 
 	// Default to assigning a new object as a label for each new edge.
 	g.setDefaultEdgeLabel(function() { return {label:'x'}; });
@@ -17,7 +17,7 @@ function graph(o) {
 
 	var edgeFont = 'sans-serif';
 	var edgeFontHeight = 12;
-	var edgePadding = 2;
+	var edgePadding = 1;
 	var edgeLineColor = '#777';
 	var edgeLineWidth = 1;
 	var edgeLabelColor = '#000';
@@ -55,7 +55,7 @@ function graph(o) {
 
 	o.nodes.forEach(function(n) {
 		var o = clone(n); delete o.id; delete o.label;
-		g.setNode(n.id, box(n.label), o);
+		g.setNode(n.id, box(n.label, o));
 	});
 
 	o.edges.forEach(function(e) {
@@ -97,7 +97,7 @@ function graph(o) {
 		ctx.beginPath();
 		points.forEach(function(p, i) {
 			ctx[ i === 0 ? 'moveTo' : 'lineTo' ](p.x, p.y);
-		})
+		});
 		ctx.stroke();
 	};
 
@@ -137,4 +137,4 @@ function graph(o) {
 	});
 
 	return canvasEl;
-};
+}
