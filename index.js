@@ -66,7 +66,8 @@ var drawGraph = function() {
 				to:   id2,
 				label: k2,
 				lineWidth: 2,
-				lineColor: '#000'
+				lineColor: '#000',
+				fontStyle: 'bold'
 			});
 		});
 	});
@@ -86,7 +87,34 @@ var drawGraph = function() {
 
 	c = graph({
 		nodes: nodes,
-		edges: edges
+		edges: edges,
+		layout: {
+			// rankdir: 'TB',
+			// nodesep: 50,
+			// edgesep: 10,
+			// ranksep: 50,
+			marginx: 10,
+			marginy: 10,
+
+			nodes: {
+				fontFamily:      'sans-serif',
+				fontHeight:      14,
+				fontStyle:       '', // '' | 'bold' | 'italic' | 'bold italic'
+				padding:         6,
+				labelColor:      '#000',
+				backgroundColor: '#EEE'
+			},
+
+			edges: {
+				fontFamily: 'sans-serif',
+				fontHeight: 12,
+				fontStyle:  'bold', // '' | 'bold' | 'italic' | 'bold italic'
+				padding:    1,
+				lineWidth:  1,
+				lineColor:  '#777',
+				labelColor: '#000'
+			}
+		}
 	});
 
 	document.body.appendChild(c);
