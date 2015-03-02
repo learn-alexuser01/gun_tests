@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>gun testing</title>
+		<title>gundb testing</title>
 
 		<script src="https://rawgit.com/amark/gun/master/gun.js"></script>
 
@@ -21,7 +21,17 @@
 			}
 
 			pre {
-				margin: 2px;
+				margin: 10px;
+			}
+
+			i {
+				color: green;
+			}
+
+			canvas {
+				position: absolute;
+				top: 0;
+				right: 0;
 			}
 		</style>
 	</head>
@@ -30,7 +40,7 @@
 		<button onclick="localStorage.clear(); gun = window.Gun()">RESET</button>
 
 		<div id="pointers">
-			<pre><code>** API reference **
+			<pre><code><b>** API reference **</b>
 
 gun
   .set( {Object} o , [{Function} cb] )
@@ -44,27 +54,27 @@ gun
   .blank()
   .insert
 
-Open the console and do some gun ops. See the graph update accordingly...
+<i>Open the console and do some gun ops. See the graph update accordingly...
 Yes, ignore the "no peers to connect to error". I'm also killing localStorage at initiation to kill prior cache.
-Use the reset button to start afresh.
+Use the reset button to start afresh.</i>
 
 
-** Creation example **
+<b>** Creation example ** (these were run for you as an example)</b>
 
 gun.set({gender:'m', age:30, name:'alfred'}).key('user/alfred')
 gun.set({gender:'f', age:22, name:'beth'  }).key('user/beth'  )
-gun.load('user/alfred').get(function(a) { gun.load('user/beth'  ).path('friend_of').set(a); }) // b - friend_of -> a
-gun.load('user/beth'  ).get(function(b) { gun.load('user/alfred').path('friend_of').set(b); }) // a - friend_of -> b
+gun.load('user/alfred').get(function(a) { gun.load('user/beth'  ).path('friend_of').set(a); }) <i>// b - friend_of -> a</i>
+gun.load('user/beth'  ).get(function(b) { gun.load('user/alfred').path('friend_of').set(b); }) <i>// a - friend_of -> b</i>
 
 
-** Query example **
+<b>** Query example **</b>
 
 gun.load('user/beth').path('friend_of').get(log)
 gun.load('user/beth').path('friend_of.age').get(log)
 gun.load('user/john').blank(log2('no user named john!'))
 
 
-** Update and on **
+<b>** Update and on **</b>
 
 gun.load('user/alfred').on(function() { log(arguments); })
 gun.load('user/alfred').set({age:31})
