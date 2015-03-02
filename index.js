@@ -1,6 +1,6 @@
-//var log = function() { window.console.log.apply(window.console, arguments); };
+var log = function() { window.console.log.apply(window.console, arguments); };
 
-//var log2 = function(txt) { return log(txt); };
+var log2 = function(txt) { return log(txt); };
 
 localStorage.clear();
 
@@ -30,10 +30,8 @@ var drawGraph = function() {
 	var nodes = [];
 	var edges = [];
 
-	//gun.__.keys;
-
-	var nodeColor = '#CAA';
-	var indexColor = '#ACA';
+	var nodeColor  = '#A88';
+	var indexColor = '#8A8';
 
 	forKV(gun.__.graph, function(id, n) {
 		nodes.push({         // NODE
@@ -89,7 +87,7 @@ var drawGraph = function() {
 		});
 	});
 
-	c = window.graph({
+	c = window.dagreCanvas({
 		nodes: nodes,
 		edges: edges,
 		layout: {

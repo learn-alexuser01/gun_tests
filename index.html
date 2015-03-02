@@ -8,7 +8,7 @@
 		<script src="https://rawgit.com/amark/gun/master/gun.js"></script>
 
 		<script type="text/javascript" src="https://rawgit.com/cpettitt/dagre/master/dist/dagre.min.js"></script>
-		<script type="text/javascript" src="graph.js"></script>
+		<script type="text/javascript" src="https://josepedrodias.github.io/dagre-canvas/dagre-canvas.js"></script>
 
 		<style type="text/css">
 			body {
@@ -25,15 +25,17 @@
 			}
 		</style>
 	</head>
-	
+
 	<body>
+		<button onclick="localStorage.clear(); gun = window.Gun()">RESET</button>
+
 		<div id="pointers">
 			<pre><code>** API reference **
 
 gun
   .set( {Object} o , [{Function} cb] )
   .load( {String} k )
-  .get( {Function} cb )
+  .get( {Function} cb( {Object} o , {String} lastPathPart ) )
   .key( {String} k )
   .path( {String} p )
   .on( {Function} cb )
@@ -43,6 +45,9 @@ gun
   .insert
 
 Open the console and do some gun ops. See the graph update accordingly...
+Yes, ignore the "no peers to connect to error". I'm also killing localStorage at initiation to kill prior cache.
+Use the reset button to start afresh.
+
 
 ** Creation example **
 
@@ -53,6 +58,16 @@ gun.load('user/beth'  ).get(function(b) { gun.load('user/alfred').path('friend_o
 
 
 ** Query example **
+
+gun.load('user/beth').path('friend_of').get(log)
+gun.load('user/beth').path('friend_of.age').get(log)
+gun.load('user/john').blank(log2('no user named john!'))
+
+
+** Update and on **
+
+gun.load('user/alfred').on(function() { log(arguments); })
+gun.load('user/alfred').set({age:31})
 
 			<code></pre>
 		</div>
