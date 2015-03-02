@@ -33,20 +33,16 @@ var log2 = function(txt) { return log(txt); };
 //var gun = window.Gun('http://stage.sl.pt:1337/');
 var gun = window.Gun();
 
-gun
-	.set({
-		name:     'Helen',
-		species:  'human'
-	})
+/*gun
+	.set({ name:'Helen', species:'human' })
 	.key('person/h')
+
+	//.load('person/h')
 
 	.path('cat')
 
-	.set({
-		name:     'Cesar',
-		species:  'cat'
-	})
-	.key('cat/c');
+	.set({ name:'Cesar', species:'cat' })
+	.key('cat/c');*/
 
 /*
 gun
@@ -59,6 +55,13 @@ gun
 	})
 	.blank(log2('oops'));
 */
+
+// gun.set({age:10}).set({gender:'m'}).key('a')
+// gun.set({age:10}).set({gender:'m'}).key('b')
+// gun.load('a').get(function(a) { gun.load('b').path('cena').set(a); }) // b - cena -> a
+// gun.load('b').get(function(b) { gun.load('a').path('cena2').set(b); }) // a - cena2 -> b
+// drawGraph()
+
 
 //gun.load('person/h').get(log).path('cat').get(log).path('person').get(log);
 
@@ -78,7 +81,13 @@ var rndId = function() {
 };
 
 
-setTimeout(function() {
+var c;
+
+var drawGraph = function() {
+	if (c) {
+		document.body.removeChild(c);
+	}
+
 	var nodes = [];
 	var edges = [];
 
@@ -87,14 +96,25 @@ setTimeout(function() {
 	forKV(gun.__.graph, function(id, n) {
 		nodes.push({
 			id: id,
-			label: 'N ' + id,
+			label: id.substring(0, 6),
+			//label: id,
 			backgroundColor: '#FCC'
 		});
 
 		forKV(n, function(k2, val) {
 			var id2 = rndId();
 
-			if (typeof val === 'object') { return; }
+			if (typeof val === 'object') {
+				if (k2 === '_') { return; }
+
+				return edges.push({
+					from: id,
+					to:   val['#'],
+					label: k2,
+					lineWidth: 2,
+					lineColor: '#F0F'
+				});
+			}
 
 			nodes.push({
 				id: id2,
@@ -115,7 +135,7 @@ setTimeout(function() {
 	forKV(gun.__.keys, function(index, o) {
 		nodes.push({
 			id: index,
-			label: 'I ' + index,
+			label: index,
 			backgroundColor: '#CFC'
 		});
 
@@ -124,16 +144,18 @@ setTimeout(function() {
 			to:   o._['#']
 		});
 
-		console.log(index, o._['#']);
+		//console.log(index, o._['#']);
 	});
 
-	var c = graph({
+	c = graph({
 		nodes: nodes,
 		edges: edges
 	});
 
 	document.body.appendChild(c);
-}, 1000);
+}
+
+//setTimeout(drawGraph, 1000);
 
 </script>
 </body>

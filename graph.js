@@ -30,6 +30,8 @@ function graph(o) {
 	ctx.font = nodeFontHeight + 'px sans-serif';
 
 	var merge = function(to, from) {
+		if (!to) {   to   = {}; }
+		if (!from) { from = {}; }
 		for (var k in from) {
 			if (!(k in to)) {
 				to[k] = from[k];
