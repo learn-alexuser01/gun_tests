@@ -49,14 +49,21 @@ gun
   .key( {String} k )
   .path( {String} p )
   .on( {Function} cb )
+  .map( {Function} cb( {any} val , {String} p ) , [{Boolean} allProps] )
+  .blank( {Function} cb )
   .back
-  .map()
-  .blank()
-  .insert
 
 <i>Open the console and do some gun ops. See the graph update accordingly...
 Yes, ignore the "no peers to connect to error". I'm also killing localStorage at initiation to kill prior cache.
 Use the reset button to start afresh.</i>
+
+
+<b>** These are available for convenience **</b>
+
+log() prints its arguments
+log2(txt) prints given txt
+atob(keya, path, keyb) creates a -> path -> b
+input(s) and output() serialize graph
 
 
 <b>** Creation example ** (these were run for you as an example)</b>
@@ -65,6 +72,7 @@ gun.set({gender:'m', age:30, name:'alfred'}).key('user/alfred')
 gun.set({gender:'f', age:22, name:'beth'  }).key('user/beth'  )
 gun.load('user/alfred').get(function(a) { gun.load('user/beth'  ).path('friend_of').set(a); }) <i>// b - friend_of -> a</i>
 gun.load('user/beth'  ).get(function(b) { gun.load('user/alfred').path('friend_of').set(b); }) <i>// a - friend_of -> b</i>
+<i>// same as atob('user/alfred', 'friend_of', 'user/beth')</i>
 
 
 <b>** Query example **</b>

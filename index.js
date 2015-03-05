@@ -1,10 +1,18 @@
-var log = function() { window.console.log.apply(window.console, arguments); };
+function log() { window.console.log.apply(window.console, arguments); }
 
-var log2 = function(txt) { return log(txt); };
+function log2(txt) { return log(txt); }
+
+function output() { var _=gun.__; return JSON.stringify([_.graph,_.keys]); }
+
+function input(o) { o=JSON.parse(o); var _=gun.__; _.graph=o[0]; _.keys=o[1]; }
+
+function atob(a, to, b) { gun.load(b).get(function(B) { gun.load(a).path(to).set(B); }); }
+
+
 
 localStorage.clear();
 
-//var gun = window.Gun('http://stage.sl.pt:1337/');
+//var gun = window.Gun('http://stage.sl.pt:1337/gun');
 var gun = window.Gun();
 
 var forKV = function(o, cb) {

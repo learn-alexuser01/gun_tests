@@ -44,12 +44,9 @@ Ommitted fields are not zeroed out. To do so you must pass null value.
 
 .on( fn(o) ) - on is alike get, but gets called on node changes, not only once
 
-
-.map wraps around parallel paths. ??
+.map( cb, [allValues]) - called for each value/path from context. if 2nd arg is true, all values are visited, otherwise only outbound nodes are
 
 .blank(fn) is a conditional which executes if the node from load is empty.
-
-.insert wraps around set, putting in objects without human friendly fields, may not stay in core???
 
 circular references are supported, that is, nodes can point to one another via fields/paths
 
@@ -65,24 +62,3 @@ Load, open a key or bring a relation into cache, to start exploring a graph.
 Path, navigate through a graph, **via fields**, by chaining relations together.
 Get, gives you the node or value from the path, and as they are changed.
 Set, to change the value on a field or merge a node or nodes.
-
-
-var mark = gun.set({name: "Mark Nadal"});
-var name = mark.path('name');
-mark.get(function(user){
-  console.log(user); // {name: "Mark Nadal"}
-});
-name.get(function(val){
-  console.log(val); // "Mark Nadal"
-});
-
-
-mark.set({ spouse: {name: "Amber Nadal"}, cat: {name: "Hobbes"} })
-  .path('spouse')
-    .set({studies: "Psychology"})
-    .back
-  .path('cat.name')
-    .get(function(name){
-      console.log(name); // "Hobbes"
-});
-```
